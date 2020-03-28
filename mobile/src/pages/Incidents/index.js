@@ -27,8 +27,8 @@ export default function Incidents() {
             params: { page },
         });
         
+        setTotal(response.headers['X-Total-Count'] || incidents.length);
         setIncidents([...incidents, ...response.data]);
-        setTotal(response.headers['X-Total-Count']);
         setPage(page + 1);
         setLoading(false);        
     }
@@ -50,13 +50,13 @@ export default function Incidents() {
             <Text style={styles.description}>Escolha um dos casos abaixo e salve o dia.</Text>
 
             <FlatList
-                style={styles.incidentsList}
+                style={styles.incidentList}
                 showsVerticalScrollIndicator={false}
                 data={incidents}
                 keyExtractor={incident => String(incident.id)}
                 onEndReached={loadIncidents}
                 onEndReachedThreshold={0.2}
-                renderItem={({ item: incident }) => {
+                renderItem={({ item: incident }) => (
                     <View style={styles.incident}>
                         <Text style={styles.incidentProperty}>ONG:</Text>
                         <Text style={styles.incidentValue}>{incident.name}</Text>
@@ -78,7 +78,7 @@ export default function Incidents() {
                                 <Feather name="arrow-right" size={16} color="#e02041" />
                         </TouchableOpacity>
                     </View>
-                }}
+                )}
             />
         </View>
     );
